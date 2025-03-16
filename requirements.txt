@@ -1,0 +1,5 @@
+# Intentionally vulnerable packages
+flask==0.12.3              # Vulnerable to CVE-2018-1000656
+django==1.11.29            # Vulnerable to multiple CVEs
+requests==2.19.1           # Vulnerable to CVE-2018-18074
+pyyaml==5.1                # Vulnerable to CVE-2020-14343
