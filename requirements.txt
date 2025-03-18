@@ -1,5 +1,9 @@
 # Intentionally vulnerable packages
-flask==0.12.3              # Vulnerable to CVE-2018-1000656
-django==1.11.29            # Vulnerable to multiple CVEs
-requests==2.19.1           # Vulnerable to CVE-2018-18074
-pyyaml==5.1                # Vulnerable to CVE-2020-14343
+flask==2.2.5              # Vulnerable to CVE-2018-1000656
+django==4.2.20            # Vulnerable to multiple CVEs
+requests==2.32.2           # Vulnerable to CVE-2018-18074
+pyyaml==5.4                # Vulnerable to CVE-2020-14343
+idna>=3.7 # not directly required, pinned by Snyk to avoid a vulnerability
+urllib3>=1.26.19 # not directly required, pinned by Snyk to avoid a vulnerability
+werkzeug>=3.0.6 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
