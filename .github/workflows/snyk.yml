@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+
+  pull_request:
+    branches:
+      - main
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -18,16 +22,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install Snyk
-        run: npm install -g snyk
+      - name: Run Snyk Security Scan
+        run: |
+          npm install -g snyk
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk test --all-projects
+          
+#      - name: Install Snyk
+#        run: npm install -g snyk
 
 
-      - name: Debug Snyk Installation
-        run: snyk --version
+ #     - name: Debug Snyk Installation
+ #       run: snyk --version
 
-      - name: Authenticate Snyk using CLI
-        run: snyk auth || echo "Please complete Snyk authentication via browser"
+#      - name: Authenticate Snyk using CLI
+#        run: snyk auth || echo "Please complete Snyk authentication via browser"
 
-      - name: Snyk scan
-        run: snyk test || echo "Snyk test failed"
+#     - name: Snyk scan
+#       run: snyk test || echo "Snyk test failed"
        
