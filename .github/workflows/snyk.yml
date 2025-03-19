@@ -22,11 +22,37 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Snyk Security Scan
+
+      - name: Debug SNYK_TOKEN
         run: |
-          npm install -g snyk
-          snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk test --all-projects
+          if [ -z "$SNYK_TOKEN" ]; then
+            echo "SNYK_TOKEN is not set"
+          else
+            echo "SNYK_TOKEN is set"
+          fi
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
+      - name: Authenticate with Snyk using Token
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth $SNYK_TOKEN
+
+
+      - name: Clean OAuth Config
+        run: rm -f ~/.config/configstore/snyk.json
+
+      - name: Run Snyk Security Scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          run: snyk test --all-projects --debug
+                                                                                          
+#      - name: Run Snyk Security Scan
+#        run: |
+#          npm install -g snyk
+#          snyk auth ${{ secrets.SNYK_TOKEN }}
+#          snyk test --all-projects
           
 #      - name: Install Snyk
 #        run: npm install -g snyk
