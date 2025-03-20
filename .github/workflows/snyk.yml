@@ -4,9 +4,9 @@ on:
     branches:
       - main
 
-  pull_request:
-    branches:
-      - main
+#  pull_request:
+#    branches:
+#      - main
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -22,38 +22,19 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install Node.js and npm
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Snyk CLI
+      - name: Install Snyk 
         run: npm install -g snyk
 
-      - name: Debug SNYK_TOKEN
-        run: |
-          if [ -z "$SNYK_TOKEN" ]; then
-            echo "SNYK_TOKEN is not set"
-          else
-            echo "SNYK_TOKEN is set"
-          fi
+ 
+      - name: Authenticate Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+
+      - name: Snyk Scan
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-
-      - name: Authenticate with Snyk using Token
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk auth $SNYK_TOKEN --disable
-
-
-      - name: Clean OAuth Config
-        run: rm -f ~/.config/configstore/snyk.json
-
-      - name: Run Snyk Security Scan
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk test --all-projects --debug
                                                                                           
 #      - name: Run Snyk Security Scan
 #        run: |
